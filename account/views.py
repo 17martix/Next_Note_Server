@@ -8,6 +8,13 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework import permissions
 
+from rest_framework import parsers, renderers
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.compat import coreapi, coreschema
+from rest_framework.response import Response
+from rest_framework.schemas import ManualSchema
+
 from account.models import Profile
 from account.serializers import UserSerializer, AccountSerializer, ProfileSerializer
 
@@ -94,3 +101,55 @@ class ProfileUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Profile.objects.filter(user=user)
+
+
+class CustomObtainAuthToken(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = AuthTokenSerializer
+    if coreapi is not None and coreschema is not None:
+        schema = ManualSchema(
+            fields=[
+                coreapi.Field(
+                    name="username",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Username",
+                        description="Valid username for authentication",
+                    ),
+                ),
+                coreapi.Field(
+                    name="password",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Password",
+                        description="Valid password for authentication",
+                    ),
+                ),
+            ],
+            encoding="application/json",
+        )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        # account=get_user_model().objects.get(id=user.id)
+        profile=Profile.objects.get(user=user)
+        token, created = Token.objects.get_or_create(user=user)
+        content = {
+            'token': token.key,
+            'user_id': user.id,
+            'uname': user.username,
+            'email': user.email,
+            'language':profile.language,
+            'archive_task':profile.done_todo_delay,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+        return Response(content)
