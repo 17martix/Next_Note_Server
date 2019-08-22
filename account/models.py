@@ -10,6 +10,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=50, default='United States')
     language = models.CharField(max_length=50, default='English')
+    done_todo_delay = models.IntegerField(default=48, verbose_name="Done Todo Delay")
 
     def __str__(self):
         return self.user.username

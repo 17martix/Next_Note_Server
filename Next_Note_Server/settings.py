@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'account',
+    'todo',
 ]
 
 REST_FRAMEWORK = {
@@ -89,10 +90,23 @@ WSGI_APPLICATION = 'Next_Note_Server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'nextnote',
+        'USER': 'martix',
+        'PASSWORD': 'martix',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -127,7 +141,10 @@ DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
+"""
 ALLOWED_HOSTS = ['*']
+"""
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nexnote.herokuapp.com']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

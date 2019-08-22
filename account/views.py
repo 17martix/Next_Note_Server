@@ -1,10 +1,13 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
+from rest_framework import permissions
 
-from account import permissions
 from account.models import Profile
 from account.serializers import UserSerializer, AccountSerializer, ProfileSerializer
 
@@ -91,5 +94,3 @@ class ProfileUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Profile.objects.filter(user=user)
-
-
