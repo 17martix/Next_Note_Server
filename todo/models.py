@@ -19,7 +19,7 @@ class ToDo(models.Model):
             global_id=self.id,
             task=self.task,
             description=self.description,
-            deadline=self.deadline,
+            deadline=str(self.deadline),
             is_done=self.is_done,
             updated_at=str(self.updated_at),
             created_at=str(self.created_at),
