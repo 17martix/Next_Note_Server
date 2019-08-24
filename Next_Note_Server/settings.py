@@ -54,6 +54,14 @@ REST_FRAMEWORK = {
     )
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # consider removing for another service
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'musiqx45@gmail.com'
+EMAIL_HOST_PASSWORD = 'musiqx#AB5'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'NexNote Team <support@nextnote.com>'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',

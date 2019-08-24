@@ -10,10 +10,9 @@ urlpatterns = [
     url(r'^check/username/$', views.is_username_taken),
     url(r'^recovery/$', views.password_recovery),
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
-    url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
     url(r'^authentication/$', views.CustomObtainAuthToken.as_view(), name='authentication'),
-    url(r'^info/change/$', views.AccountUpdate.as_view()),
-    url(r'^todo/delay/change/$', views.ProfileUpdate.as_view()),
+    url(r'^info/change/(?P<pk>[0-9]+)/$', views.AccountUpdate.as_view()),
+    url(r'^todo/delay/change/(?P<pk>[0-9]+)/$', views.ProfileUpdate.as_view()),
 ]
 
 urlpatterns += [
