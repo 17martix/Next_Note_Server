@@ -30,13 +30,13 @@ class UpdateToDo(APIView):
             if 'deadline' in todo:
                 new_deadline=todo['deadline']
 
-            if todo['status'] == 'archived':
-                new_status = todo['status']
+            if todo['status'] == "archived":
+                new_status = 'archived'
 
             if todo['status'] == "created":
                 ToDo.objects.get_or_create(user=user, task=todo['task'], description=new_description,
                                            deadline=new_deadline, is_done=todo['is_done'], status=new_status)
-            elif todo['status'] == "updated":
+            elif todo['status'] == "updated" or todo['status'] == "archived":
                 if ToDo.objects.filter(id=todo['global_id']).exists():
                     ToDo.objects.filter(id=todo['global_id']).update(task=todo['task'], description=new_description,
                                                                      deadline=new_deadline, is_done=todo['is_done'],
