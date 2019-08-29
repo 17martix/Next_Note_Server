@@ -60,4 +60,4 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('country', 'language')
+        fields = ('country', 'language','done_todo_delay')

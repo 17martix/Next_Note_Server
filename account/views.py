@@ -58,9 +58,7 @@ def password_recovery(request):
     email = request.GET["email"]
     result = ""
     is_registered = model.objects.filter(email=email).exists()
-    print("HERE 1  "+email)
     if is_registered == True:
-        print("HERE 2")
         new_password = model.objects.make_random_password()
 
         user_instance = model.objects.get(email=email)
@@ -81,7 +79,6 @@ def password_recovery(request):
     content = {
         'error': result,
     }
-    print("HERE 3")
     return HttpResponse(json.dumps(content), content_type="application/json")
 
 
