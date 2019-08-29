@@ -43,7 +43,7 @@ class UpdateToDo(APIView):
                                                                      status=new_status)
                 else:
                     ToDo.objects.get_or_create(user=user, task=todo['task'], description=new_description,
-                                               deadline=new_description, is_done=todo['is_done'], status=new_status)
+                                               deadline=new_deadline, is_done=todo['is_done'], status=new_status)
             elif todo['status'] == "deleted":
                 if ToDo.objects.filter(id=todo['global_id']).exists():
                     ToDo.objects.get(id=todo['global_id']).delete()
