@@ -82,7 +82,7 @@ def password_recovery(request):
         'error': result,
     }
     print("HERE 3")
-    return HttpResponse("DDD")
+    return HttpResponse(json.dumps(content), content_type="application/json")
 
 
 class AccountView(generics.ListAPIView):
