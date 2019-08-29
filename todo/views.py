@@ -23,12 +23,19 @@ class UpdateToDo(APIView):
 
         for todo in data:
             new_status = 'ok'
+            new_description=""
+            new_deadline=""
+            if 'description' in todo:
+                new_description=todo['description']
+            if 'deadline' in todo:
+                new_deadline=todo['deadline']
+
             if todo['status'] == 'archived':
                 new_status = todo['status']
 
             if todo['status'] == "created":
-                ToDo.objects.get_or_create(user=user, task=todo['task'], description=todo['description'],
-                                           deadline=todo['deadline'], is_done=todo['is_done'], status=new_status)
+                ToDo.objects.get_or_create(user=user, task=todo['task'], description=new_description,
+                                           deadline=new_deadline, is_done=todo['is_done'], status=new_status)
             elif todo['status'] == "updated":
                 if ToDo.objects.filter(id=todo['global_id']).exists():
                     ToDo.objects.filter(id=todo['global_id']).update(task=todo['task'], description=todo['description'],
