@@ -57,27 +57,26 @@ def password_recovery(request):
     result = "false"
     if request.body:
         data = json.loads(request.body)
-        for account in data:
-            model = get_user_model()
-            email = account['email']
-            is_registered = model.objects.filter(email=email).exists()
-            if is_registered == True:
-                new_password = model.objects.make_random_password()
+        model = get_user_model()
+        email = data['email']
+        is_registered = model.objects.filter(email=email).exists()
+        if is_registered == True:
+            new_password = model.objects.make_random_password()
 
-                user_instance = model.objects.get(email=email)
-                username = user_instance.username
-                user_instance.set_password(new_password)
-                user_instance.save()
+            user_instance = model.objects.get(email=email)
+            username = user_instance.username
+            user_instance.set_password(new_password)
+            user_instance.save()
 
-                msg = "Here is your new password: {0}".format(new_password)
-                res = send_mail("Password Recovery", msg, "support@structurecode.com", [email])
+            msg = "Here is your new password: {0}".format(new_password)
+            res = send_mail("Password Recovery", msg, "support@structurecode.com", [email])
 
-                if res == 0:
-                    result = "false"
-                else:
-                    result = "true"
-            else:
+            if res == 0:
                 result = "false"
+            else:
+                result = "true"
+        else:
+            result = "false"
     return HttpResponse(result)
 
 
