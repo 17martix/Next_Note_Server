@@ -54,30 +54,36 @@ def is_username_taken(request):
 
 @csrf_exempt
 def password_recovery(request):
-    result = "false"
-    if request.body:
-        data = json.loads(request.body)
-        model = get_user_model()
-        email = data['email']
-        is_registered = model.objects.filter(email=email).exists()
-        if is_registered == True:
-            new_password = model.objects.make_random_password()
+    model = get_user_model()
+    email = request.GET["email"]
+    result = ""
+    is_registered = model.objects.filter(email=email).exists()
+    print("HERE 1")
+    print(email)
+    if is_registered == True:
+        print("HERE 2")
+        new_password = model.objects.make_random_password()
 
-            user_instance = model.objects.get(email=email)
-            username = user_instance.username
-            user_instance.set_password(new_password)
-            user_instance.save()
+        user_instance = model.objects.get(email=email)
+        username = user_instance.username
+        user_instance.set_password(new_password)
+        user_instance.save()
 
-            msg = "Here is your new password: {0}".format(new_password)
-            res = send_mail("Password Recovery", msg, "support@structurecode.com", [email])
+        msg = "Here is your new password: {0}".format(new_password)
+        res = send_mail("Password Recovery", msg, "support@structurecode.com", [email])
 
-            if res == 0:
-                result = "false"
-            else:
-                result = "true"
+        if res == 0:
+            result = "email not sent"
         else:
-            result = "false"
-    return HttpResponse(result)
+            result = "none"
+    else:
+        result = "email_free"
+
+    content = {
+        'error': result,
+    }
+    print("HERE 3")
+    return Response(content)
 
 
 class AccountView(generics.ListAPIView):
