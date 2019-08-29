@@ -52,6 +52,7 @@ def is_username_taken(request):
     return HttpResponse(result)
 
 
+@csrf_exempt
 def password_recovery(request):
     model = get_user_model()
     email = request.POST["email"]
