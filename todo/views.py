@@ -38,12 +38,12 @@ class UpdateToDo(APIView):
                                            deadline=new_deadline, is_done=todo['is_done'], status=new_status)
             elif todo['status'] == "updated":
                 if ToDo.objects.filter(id=todo['global_id']).exists():
-                    ToDo.objects.filter(id=todo['global_id']).update(task=todo['task'], description=todo['description'],
-                                                                     deadline=todo['deadline'], is_done=todo['is_done'],
+                    ToDo.objects.filter(id=todo['global_id']).update(task=todo['task'], description=new_description,
+                                                                     deadline=new_deadline, is_done=todo['is_done'],
                                                                      status=new_status)
                 else:
-                    ToDo.objects.get_or_create(user=user, task=todo['task'], description=todo['description'],
-                                               deadline=todo['deadline'], is_done=todo['is_done'], status=new_status)
+                    ToDo.objects.get_or_create(user=user, task=todo['task'], description=new_description,
+                                               deadline=new_description, is_done=todo['is_done'], status=new_status)
             elif todo['status'] == "deleted":
                 if ToDo.objects.filter(id=todo['global_id']).exists():
                     ToDo.objects.get(id=todo['global_id']).delete()
