@@ -55,7 +55,7 @@ def is_username_taken(request):
 @csrf_exempt
 def password_recovery(request):
     model = get_user_model()
-    email = request.POST["email"]
+    email = request.POST.get("email", "")
     result = ""
     is_registered = model.objects.filter(email=email).exists()
     if is_registered == True:
