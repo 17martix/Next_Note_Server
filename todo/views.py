@@ -48,6 +48,6 @@ class UpdateToDo(APIView):
                 if ToDo.objects.filter(id=todo['global_id']).exists():
                     ToDo.objects.get(id=todo['global_id']).delete()
 
-        todo_list_to_send = ToDo.objects.filter(user=user)
+        todo_list_to_send = ToDo.objects.filter(user=user, status='ok')
         results = [ob.as_json() for ob in todo_list_to_send]
         return HttpResponse(json.dumps(results), content_type="application/json")
